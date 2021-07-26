@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "io.freefair.lombok" version "5.1.1"
+}
+allprojects {
+    apply plugin: 'java'
+    apply plugin: "io.freefair.lombok"
+    generateLombokConfig.enabled = false
+
+    apply from: new File(rootProject.rootDir, '/scripts.gradle')
+
+    group = 'ru.spliterash'
+    version = '1.0.0'
+
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
+    }
+}
+
+//noinspection GroovyAssignabilityCheck
+compileSub(project)

@@ -1,0 +1,23 @@
+ext.compileSub = { Project project ->
+    project.subprojects.each { sub -> _compileSub(sub) }
+}
+
+def _compileSub(Project project) {
+    project.subprojects.each { sub -> _compileSub(sub) }
+
+    dependencies {
+        compile project
+    }
+}
+
+ext.enableShadow = { String... relocateList ->
+
+    apply plugin: 'com.github.johnrengelman.shadow'
+    tasks.assemble.dependsOn tasks.shadowJar
+
+    for (path in relocateList) {
+        shadowJar {
+            relocate path, "ru.spliterash." + rootProject.name.toLowerCase() + ".shadow." + path
+        }
+    }
+}

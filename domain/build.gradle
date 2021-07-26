@@ -1,0 +1,6 @@
+compileSub(project)
+enableShadow("net.jodah.typetools")
+
+dependencies {
+    compile 'net.jodah:typetools:0.6.3'
+}
