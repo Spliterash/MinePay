@@ -5,12 +5,12 @@ import ru.spliterash.minepay.domain.donate.*;
 import ru.spliterash.minepay.domain.donate.base.Donate;
 import ru.spliterash.minepay.domain.donate.base.DonateGiver;
 import ru.spliterash.minepay.domain.donate.base.DonatePriceCalculator;
-import ru.spliterash.minepay.domain.donateTypes.fixed.FixedPriceDonate;
-import ru.spliterash.minepay.domain.donateTypes.fixed.FixedDonatePriceCalculator;
+import ru.spliterash.minepay.domain.donate.base.fixed.FixedPriceDonate;
+import ru.spliterash.minepay.domain.donate.base.fixed.FixedDonatePriceCalculator;
 import ru.spliterash.minepay.domain.exceptions.DonatAlreadyRegisteredException;
 import ru.spliterash.minepay.domain.exceptions.DonateGiverNotFoundException;
 import ru.spliterash.minepay.domain.exceptions.PaymentSystemAlreadyRegisteredException;
-import ru.spliterash.minepay.domain.payment.system.InGame;
+import ru.spliterash.minepay.domain.payment.system.InGamePaymentSystem;
 import ru.spliterash.minepay.domain.payment.system.PaymentSystem;
 import ru.spliterash.minepay.domain.platform.IPlatform;
 
@@ -29,8 +29,8 @@ public class MinePayDomain {
     /**
      * Список доступных платёжных систем
      */
-    private final Set<PaymentSystem> systems = new LinkedHashSet<>();
-    private final Set<DonateContainer<?, ?>> donateTypes = new HashSet<>();
+    private final Set<PaymentSystem<?>> systems = new LinkedHashSet<>();
+    private final Set<DonateTypeDefinition<?, ?>> donateTypes = new HashSet<>();
 
     /**
      * Текущая платформа
@@ -46,20 +46,17 @@ public class MinePayDomain {
     public MinePayDomain(IPlatform platform, String serverName) {
         this.platform = platform;
         this.serverName = serverName;
-
-
     }
 
-
-    public <D extends Donate> DonateContainer<D, ?> getDonateContainer(Class<D> clazz) {
+    public <D extends Donate> DonateTypeDefinition<D, ?> getDonateContainer(Class<D> clazz) {
         //noinspection unchecked
-        return (DonateContainer<D, ?>) donateTypes.stream()
+        return (DonateTypeDefinition<D, ?>) donateTypes.stream()
                 .filter(t -> t.getDonateClazz().equals(clazz))
                 .findFirst()
                 .orElseThrow(() -> new DonateGiverNotFoundException(clazz));
     }
 
-    public void registerPaymentSystem(PaymentSystem paymentSystem) {
+    public void registerPaymentSystem(PaymentSystem<?> paymentSystem) {
         systems
                 .stream()
                 .filter(s -> s.getName().equals(paymentSystem.getName()))
@@ -75,7 +72,7 @@ public class MinePayDomain {
         systems.removeIf(s -> s.getName().equals(name));
     }
 
-    public void unregisterPaymentSystem(PaymentSystem system) {
+    public void unregisterPaymentSystem(PaymentSystem<?> system) {
         systems.remove(system);
     }
 
@@ -87,15 +84,15 @@ public class MinePayDomain {
      */
     public <I extends BuyDetails<?>> void processDonate(I successDonat) {
         //noinspection unchecked
-        DonateContainer<?, I> info = (DonateContainer<?, I>) getDonateContainer(successDonat.getDonate().getClass());
+        DonateTypeDefinition<?, I> info = (DonateTypeDefinition<?, I>) getDonateContainer(successDonat.getDonate().getClass());
         info.getGiver().giveDonate(successDonat);
     }
 
-    public List<InGame> getInGamePaymentSystems() {
+    public List<InGamePaymentSystem> getInGamePaymentSystems() {
         return systems
                 .stream()
-                .filter(s -> s instanceof InGame)
-                .map(s -> (InGame) s)
+                .filter(s -> s instanceof InGamePaymentSystem)
+                .map(s -> (InGamePaymentSystem) s)
                 .collect(Collectors.toList());
     }
 
@@ -112,7 +109,7 @@ public class MinePayDomain {
                     throw new DonatAlreadyRegisteredException(donatClazz);
                 });
 
-        donateTypes.add(new DonateContainer<>(
+        donateTypes.add(new DonateTypeDefinition<>(
                 donatClazz,
                 donatCalculator,
                 donatGiver
@@ -123,6 +120,7 @@ public class MinePayDomain {
 
     public <D extends FixedPriceDonate, I extends BuyDetails<D>> void registerDonateType(Class<D> donatClazz, DonateGiver<I> donatGiver) {
 
+        //noinspection unchecked
         registerDonateType(
                 donatClazz,
                 donatGiver,

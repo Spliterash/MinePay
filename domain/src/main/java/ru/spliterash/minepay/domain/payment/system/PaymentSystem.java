@@ -1,8 +1,17 @@
 package ru.spliterash.minepay.domain.payment.system;
 
-public interface PaymentSystem {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public abstract class PaymentSystem<T extends PaymentSystemTransactionInfo> {
     /**
      * Имя платёжной системы
      */
-    String getName();
+    private final String name;
+    /**
+     * Хранилище транзакций в этой платёжной системе
+     */
+    private final T transactionStorage;
 }

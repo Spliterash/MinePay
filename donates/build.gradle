@@ -1,0 +1,7 @@
+compileSub(project)
+
+subprojects {
+    dependencies {
+        compile project(":domain")
+    }
+}

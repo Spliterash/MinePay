@@ -1,3 +1,11 @@
 rootProject.name = 'MinePay'
-
+// Базовая логика
 include "domain"
+// Определение доната
+include "donates:register"
+// Вариации
+include "donates:types:command:simple"
+include "donates:types:command:amount"
+
+// Плафторма майнсрафта
+include "platform:features:command"

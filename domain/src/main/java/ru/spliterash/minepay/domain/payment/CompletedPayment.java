@@ -7,6 +7,9 @@ import ru.spliterash.minepay.domain.donate.BuyDetails;
 @Getter
 @RequiredArgsConstructor
 public abstract class CompletedPayment<B extends BuyDetails<?>> {
+    /**
+     * ID платежа в нашей дбшке
+     */
     private final String id;
     /**
      * Цена на момент совершения покупки
@@ -17,7 +20,7 @@ public abstract class CompletedPayment<B extends BuyDetails<?>> {
      */
     private final B details;
     /**
-     * Имя платёжной системы
+     * ID платёжной системы
      */
     private final String paymentSystemId;
     /**
