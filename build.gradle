@@ -11,7 +11,7 @@ allprojects {
     apply from: new File(rootProject.rootDir, '/scripts.gradle')
 
     // Чтобы можно было использовать модули с одинаковыми именами в разных директориях
-    // Например :platform:features:command и :donates:types:command
+    // Например :platform:features:command и :donate:types:command
     // В maven с этим проблемы
     group = 'ru.spliterash.' + getGroupEnd(project)
     version = '1.0.0'

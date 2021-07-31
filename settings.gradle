@@ -1,18 +1,20 @@
 rootProject.name = 'MinePay'
-// Базовая логика
-include "domain"
-// Определение доната
-include "donates:register"
-// Вариации
-include "donates:types:command:simple"
-include "donates:types:command:amount"
 
-include "donates:types:luckyPerms"
-
-
-// Платформа майнсрафта
-include "platform:types:spigot"
-include "platform:features"
-
-// Запускалка плагина
-include "launcher"
+include(
+        // Базовая логика
+        "domain",
+        // Определение доната
+        "donate:register",
+        // Вариации
+        "donate:types:command",
+        "donate:types:command:simple",
+        "donate:types:command:amount",
+        "donate:types:luckyPerms",
+        // Различные данные плагина
+        "storage:yaml",
+        "storage:yaml:donate",
+        // Платформы майнсрафта
+        "platform:types:spigot",
+        // Запускалка плагина
+        "launcher"
+)

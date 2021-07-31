@@ -1,8 +1,7 @@
 // Лаунчер должен иметь в себе всё кроме платформы
-compileSub(project(":domain"))
-compileSub(project(":donates"))
-
 dependencies {
     compile project(":domain")
-    compile project(":donates")
+    compile project(":donate")
 }
+
+compileSub(project(":donate"))

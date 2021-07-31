@@ -1,7 +1,9 @@
 package ru.spliterash.minepay.platform.spigot;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.spliterash.minepay.domain.command.def.ICommandExecutor;
 import ru.spliterash.minepay.domain.exceptions.PlayerNotFoundException;
 import ru.spliterash.minepay.domain.platform.IPlatform;
 import ru.spliterash.minepay.domain.platform.IPlayer;
@@ -11,16 +13,22 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class SpigotPlatform extends JavaPlugin implements IPlatform {
-    private final MinePayLauncher launcher = new MinePayLauncher(this);
+    private MinePayLauncher launcher;
 
     @Override
     public void onEnable() {
+        launcher = new MinePayLauncher(this, null);
         launcher.onEnable();
     }
 
     @Override
     public void onDisable() {
         launcher.onDisable();
+        launcher = null;
+    }
+
+    public IPlayer getPlayer(Player player) {
+        return new SpigotPlayer(player);
     }
 
     @Override
@@ -51,5 +59,11 @@ public class SpigotPlatform extends JavaPlugin implements IPlatform {
     @Override
     public void runCommand(String command) {
         getServer().dispatchCommand(getServer().getConsoleSender(), command);
+    }
+
+    @Override
+    public void registerCommand(String command, ICommandExecutor handler) {
+        //noinspection ConstantConditions
+        getCommand(command).setExecutor(new SpigotCommandExecutor(this, handler));
     }
 }

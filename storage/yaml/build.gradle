@@ -1,0 +1,11 @@
+dependencies {
+    compileOnly 'org.yaml:snakeyaml:1.26' // Эта библиотека есть в каждой платформе
+}
+
+def yamlStorageProject = project
+
+subprojects {
+    dependencies {
+        compile yamlStorageProject
+    }
+}

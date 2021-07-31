@@ -1,3 +1,7 @@
 name: MinePay
 main: ru.spliterash.minepay.platform.spigot.SpigotPlatform
 version: 1.0
+commands:
+  minepay:
+    usage: Open MinePay donate list
+    permission: minepay.use

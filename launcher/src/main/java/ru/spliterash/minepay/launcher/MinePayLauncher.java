@@ -1,5 +1,8 @@
 package ru.spliterash.minepay.launcher;
 
+import lombok.RequiredArgsConstructor;
+import ru.spliterash.minepay.domain.IDonateStorage;
+import ru.spliterash.minepay.domain.ILauncher;
 import ru.spliterash.minepay.domain.MinePayDomain;
 import ru.spliterash.minepay.domain.platform.IPlatform;
 import ru.spliterash.minepay.donates.DonateRegister;
@@ -7,16 +10,14 @@ import ru.spliterash.minepay.donates.DonateRegister;
 /**
  * Класс запускающий плагин
  */
-public class MinePayLauncher {
+@RequiredArgsConstructor
+public class MinePayLauncher implements ILauncher {
     private final IPlatform platform;
+    private final IDonateStorage donateStorage;
     private MinePayDomain domain;
 
-    public MinePayLauncher(IPlatform platform) {
-        this.platform = platform;
-    }
-
     public void onEnable() {
-        this.domain = new MinePayDomain(platform);
+        this.domain = new MinePayDomain(platform, donateStorage, this);
         registerDonates();
     }
 
@@ -25,10 +26,11 @@ public class MinePayLauncher {
     }
 
     public void onDisable() {
-        domain.onDisable();
+        domain.shutdown();
     }
 
-    public void restart() {
+    @Override
+    public void reload() {
         onDisable();
         onEnable();
     }

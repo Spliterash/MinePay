@@ -1,6 +1,7 @@
 package ru.spliterash.minepay.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import ru.spliterash.minepay.domain.donate.*;
 import ru.spliterash.minepay.domain.donate.base.Donate;
 import ru.spliterash.minepay.domain.exceptions.DonatAlreadyRegisteredException;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * <p>WARNING: Здесь очень много генериков, и выглядят они очень страшно,
  * но эти генерики позволяют делать очень крутые вещи так что наверное можно потерпеть</p>
  */
+@RequiredArgsConstructor
 public class MinePayDomain {
     /**
      * Список доступных платёжных систем
@@ -33,10 +35,10 @@ public class MinePayDomain {
      */
     @Getter
     private final IPlatform platform;
-
-    public MinePayDomain(IPlatform platform) {
-        this.platform = platform;
-    }
+    @Getter
+    private final IDonateStorage donateStorage;
+    @Getter
+    private final ILauncher launcher;
 
     public <D extends Donate> DonateTypeDefinition<D, ?> getDonateDefinition(Class<D> clazz) {
         //noinspection unchecked
@@ -98,7 +100,11 @@ public class MinePayDomain {
         donateTypes.add(definition);
     }
 
-    public void onDisable() {
+    public void init() {
+
+    }
+
+    public void shutdown() {
         // Может быть сюда что то надо будет потом написать
     }
 }

@@ -1,5 +1,7 @@
 package ru.spliterash.minepay.domain.platform;
 
+import ru.spliterash.minepay.domain.command.def.ICommandExecutor;
+
 import java.util.UUID;
 
 public interface IPlatform {
@@ -19,4 +21,6 @@ public interface IPlatform {
      * Выполнить команду с наивысшими правами, то есть от консоли сервера
      */
     void runCommand(String command);
+
+    void registerCommand(String command, ICommandExecutor executor);
 }
