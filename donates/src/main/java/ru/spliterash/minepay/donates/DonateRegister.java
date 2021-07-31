@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Возможно выглядит странно, но этот метод просто собирает всё в кучу
- * никакой логики тут нет, поэтому это можно))))
+ * Возможно выглядит странно, но этот метод просто собирает всё что можно зарегать в кучу
  */
 public class DonateRegister {
     public static List<DonateTypeDefinition<?, ?>> getPluginDonates(IPlatform platform) {

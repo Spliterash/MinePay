@@ -3,10 +3,6 @@ package ru.spliterash.minepay.domain;
 import lombok.Getter;
 import ru.spliterash.minepay.domain.donate.*;
 import ru.spliterash.minepay.domain.donate.base.Donate;
-import ru.spliterash.minepay.domain.donate.base.DonateGiver;
-import ru.spliterash.minepay.domain.donate.base.DonatePriceCalculator;
-import ru.spliterash.minepay.domain.donate.base.fixed.FixedPriceDonate;
-import ru.spliterash.minepay.domain.donate.base.fixed.FixedDonatePriceCalculator;
 import ru.spliterash.minepay.domain.exceptions.DonatAlreadyRegisteredException;
 import ru.spliterash.minepay.domain.exceptions.DonateGiverNotFoundException;
 import ru.spliterash.minepay.domain.exceptions.PaymentSystemAlreadyRegisteredException;
@@ -37,18 +33,12 @@ public class MinePayDomain {
      */
     @Getter
     private final IPlatform platform;
-    /**
-     * ID сервера
-     */
-    @Getter
-    private final String serverName;
 
-    public MinePayDomain(IPlatform platform, String serverName) {
+    public MinePayDomain(IPlatform platform) {
         this.platform = platform;
-        this.serverName = serverName;
     }
 
-    public <D extends Donate> DonateTypeDefinition<D, ?> getDonateContainer(Class<D> clazz) {
+    public <D extends Donate> DonateTypeDefinition<D, ?> getDonateDefinition(Class<D> clazz) {
         //noinspection unchecked
         return (DonateTypeDefinition<D, ?>) donateTypes.stream()
                 .filter(t -> t.getDonateClazz().equals(clazz))
@@ -84,7 +74,7 @@ public class MinePayDomain {
      */
     public <I extends BuyDetails<?>> void processDonate(I successDonat) {
         //noinspection unchecked
-        DonateTypeDefinition<?, I> info = (DonateTypeDefinition<?, I>) getDonateContainer(successDonat.getDonate().getClass());
+        DonateTypeDefinition<?, I> info = (DonateTypeDefinition<?, I>) getDonateDefinition(successDonat.getDonate().getClass());
         info.getGiver().giveDonate(successDonat);
     }
 
@@ -96,36 +86,19 @@ public class MinePayDomain {
                 .collect(Collectors.toList());
     }
 
-    public <D extends Donate, I extends BuyDetails<D>> void registerDonateType(
-            Class<D> donatClazz,
-            DonateGiver<I> donatGiver,
-            DonatePriceCalculator<I> donatCalculator
-    ) {
+    public <D extends Donate, I extends BuyDetails<D>> void registerDonateType(DonateTypeDefinition<?, ?> definition) {
         donateTypes
                 .stream()
-                .filter(d -> d.getDonateClazz().equals(donatClazz))
+                .filter(d -> d.getDonateClazz().equals(definition.getDonateClazz()))
                 .findFirst()
                 .ifPresent(d -> {
-                    throw new DonatAlreadyRegisteredException(donatClazz);
+                    throw new DonatAlreadyRegisteredException(definition.getDonateClazz());
                 });
 
-        donateTypes.add(new DonateTypeDefinition<>(
-                donatClazz,
-                donatCalculator,
-                donatGiver
-        ));
+        donateTypes.add(definition);
     }
 
-    private final FixedDonatePriceCalculator<?> fixedDonatePriceCalculator = new FixedDonatePriceCalculator<>();
-
-    public <D extends FixedPriceDonate, I extends BuyDetails<D>> void registerDonateType(Class<D> donatClazz, DonateGiver<I> donatGiver) {
-
-        //noinspection unchecked
-        registerDonateType(
-                donatClazz,
-                donatGiver,
-                (FixedDonatePriceCalculator<I>) fixedDonatePriceCalculator
-        );
+    public void onDisable() {
+        // Может быть сюда что то надо будет потом написать
     }
-
 }

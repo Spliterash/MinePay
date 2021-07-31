@@ -6,6 +6,4 @@ public interface IPlayer {
     boolean isOnline();
 
     void sendMessage(String message);
-
-    void sendJsonMessage(String jsonMessage);
 }

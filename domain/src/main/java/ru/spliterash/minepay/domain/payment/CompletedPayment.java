@@ -12,17 +12,17 @@ public abstract class CompletedPayment<B extends BuyDetails<?>> {
      */
     private final String id;
     /**
-     * Цена на момент совершения покупки
-     */
-    private final double price;
-    /**
      * Инфа по купленному донату
      */
     private final B details;
     /**
-     * ID платёжной системы
+     * Цена на момент совершения покупки
      */
-    private final String paymentSystemId;
+    private final double price;
+    /**
+     * Имя платёжной системы
+     */
+    private final String paymentSystemName;
     /**
      * Сведения от платёжной системы
      */

@@ -1,0 +1,3 @@
+name: MinePay
+main: ru.spliterash.minepay.platform.spigot.SpigotPlatform
+version: 1.0

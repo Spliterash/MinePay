@@ -7,5 +7,9 @@ include "donates:register"
 include "donates:types:command:simple"
 include "donates:types:command:amount"
 
-// Плафторма майнсрафта
+// Платформа майнсрафта
+include "platform:types:spigot"
 include "platform:features:command"
+
+// Запускалка плагина
+include "launcher"
