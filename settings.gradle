@@ -7,6 +7,9 @@ include "donates:register"
 include "donates:types:command:simple"
 include "donates:types:command:amount"
 
+include "donates:types:luckyPerms"
+
+
 // Платформа майнсрафта
 include "platform:types:spigot"
 include "platform:features:command"

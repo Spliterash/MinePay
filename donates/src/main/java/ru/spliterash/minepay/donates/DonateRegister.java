@@ -5,6 +5,7 @@ import ru.spliterash.minepay.domain.platform.IPlatform;
 import ru.spliterash.minepay.donates.definition.ToRegisterDonate;
 import ru.spliterash.minepay.donates.types.command.amount.AmountCommandDonateRegister;
 import ru.spliterash.minepay.donates.types.command.simple.SimpleCommandDonateRegister;
+import ru.spliterash.minepay.donates.types.luckyPerms.LuckyPermsDonateRegister;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,8 @@ public class DonateRegister {
     public static List<DonateTypeDefinition<?, ?>> getPluginDonates(IPlatform platform) {
         return Stream.of(
                         new SimpleCommandDonateRegister(platform),
-                        new AmountCommandDonateRegister(platform)
+                        new AmountCommandDonateRegister(platform),
+                        new LuckyPermsDonateRegister(platform)
                 )
                 .filter(ToRegisterDonate::isAcceptable)
                 .map(ToRegisterDonate::getDonateTypeDefinition)
