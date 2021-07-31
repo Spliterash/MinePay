@@ -4,7 +4,6 @@ import ru.spliterash.minepay.domain.donate.DonateTypeDefinition;
 import ru.spliterash.minepay.domain.donate.base.fixed.FixedDonatePriceCalculator;
 import ru.spliterash.minepay.domain.platform.IPlatform;
 import ru.spliterash.minepay.donates.types.command.AbstractCommandDefinition;
-import ru.spliterash.minepay.platform.features.CommandPlatform;
 
 public class SimpleCommandDonateRegister extends AbstractCommandDefinition<CommandDonate> {
 
@@ -17,7 +16,7 @@ public class SimpleCommandDonateRegister extends AbstractCommandDefinition<Comma
         return new DonateTypeDefinition<>(
                 CommandDonate.class,
                 new FixedDonatePriceCalculator<>(),
-                new CommandDonateGiver((CommandPlatform) platform)
+                new CommandDonateGiver(platform)
         );
     }
 }

@@ -1,9 +1,3 @@
-allprojects {
-    dependencies {
-        compile project(":platform:features:command")
-    }
-}
-
 subprojects {
     dependencies {
         compile project(":donates:types:command")

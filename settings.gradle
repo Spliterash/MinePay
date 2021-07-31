@@ -12,7 +12,7 @@ include "donates:types:luckyPerms"
 
 // Платформа майнсрафта
 include "platform:types:spigot"
-include "platform:features:command"
+include "platform:features"
 
 // Запускалка плагина
 include "launcher"
