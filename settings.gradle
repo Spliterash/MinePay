@@ -14,7 +14,7 @@ include(
         "storage:yaml",
         "storage:yaml:donate",
         // Платформы майнсрафта
-        "platform:types:spigot",
+        "platform:spigot",
         // Запускалка плагина
         "launcher"
 )

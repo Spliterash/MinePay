@@ -2,6 +2,7 @@ package ru.spliterash.minepay.domain.platform;
 
 import ru.spliterash.minepay.domain.command.def.ICommandExecutor;
 
+import java.io.File;
 import java.util.UUID;
 
 public interface IPlatform {
@@ -23,4 +24,6 @@ public interface IPlatform {
     void runCommand(String command);
 
     void registerCommand(String command, ICommandExecutor executor);
+
+    File getFolder();
 }

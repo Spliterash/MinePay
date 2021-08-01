@@ -9,6 +9,7 @@ import ru.spliterash.minepay.domain.platform.IPlatform;
 import ru.spliterash.minepay.domain.platform.IPlayer;
 import ru.spliterash.minepay.launcher.MinePayLauncher;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class SpigotPlatform extends JavaPlugin implements IPlatform {
 
     @Override
     public void onEnable() {
-        launcher = new MinePayLauncher(this, null);
+        launcher = new MinePayLauncher(this);
         launcher.onEnable();
     }
 
@@ -65,5 +66,10 @@ public class SpigotPlatform extends JavaPlugin implements IPlatform {
     public void registerCommand(String command, ICommandExecutor handler) {
         //noinspection ConstantConditions
         getCommand(command).setExecutor(new SpigotCommandExecutor(this, handler));
+    }
+
+    @Override
+    public File getFolder() {
+        return getDataFolder();
     }
 }
